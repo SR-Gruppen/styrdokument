@@ -1,142 +1,29 @@
-% LaTeX-inställningar%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Kräver dtek-tex (github.com/dtekcth/dtek-tex)
-% KOMPILERAS MED xelatex!
+%   stadga.tex
+%   KOMPILERAS MED xelatex!
 \documentclass[a4paper]{dtek}
+
 \setcounter{secnumdepth}{5}
-\title{Stadgar}
-\date{Uppdaterad \updated}
+\title{Stadga}
+\date{Utkast: SR-Gruppen Ver 2}
 
-% FYLL I VID ÄNDRINGAR
-\newcommand{\updated}{2024-02-22} %Insert
-
-% --- PACKAGES ---
-\usepackage{xcolor}
-\usepackage{titlesec}
-\usepackage{etoolbox} % for \pretocmd and \ifblank
-
-% --- Force new page BEFORE every chapter header ---
-\pretocmd{\section}{%
-  \ifdefined\currentsubsectionTitle \finishsubsection \fi%
-  \setcounter{paracnt}{0}%
-  \clearpage%
-}{}{}
-
-
-% --- CHAPTER (kapitel) SETUP ---
-\titleformat{\section}[block]
-  {\normalfont\Large\bfseries}
-  {\thesection\ kap.}
-  {1em}
-  {}
-
-% --- CONTINUOUS PARAGRAPH COUNTER (throughout the chapter) ---
-\newcounter{paracnt} % remove any [subsection] so it doesn't reset automatically
-
-% --- COUNTERS FOR CURRENT SUBSECTION RANGE ---
-\newcounter{currsubstart}
-\newcounter{currsubend}
-% We'll use a macro to store the current subsection title.
-% (It is undefined when no subsection is “open”.)
-\let\currentsubsectionTitle\undefined
-
-% --- Helper macro to finish a subsection ---
-\newcommand{\finishsubsection}{%
-  \setcounter{currsubend}{\value{paracnt}}%
-  \ifnum\value{currsubend} < \value{currsubstart}%
-    % No paragraphs written in this subsection:
-    \addcontentsline{toc}{subsection}{\currentsubsectionTitle}%
-  \else
-    \ifnum\value{currsubstart}=\value{currsubend}%
-      \addcontentsline{toc}{subsection}{\currentsubsectionTitle\ (\arabic{currsubend}\,§)}%
-    \else
-      \addcontentsline{toc}{subsection}{\currentsubsectionTitle\ (\arabic{currsubstart} -- \arabic{currsubend}\,§§)}%
-    \fi
-  \fi
-  \let\currentsubsectionTitle\undefined
-}
-
-% --- Redefine \mysubsection ---
-% If a subsection is already open, finish it automatically.
-\newcommand{\mysubsection}[1]{%
-  \ifdefined\currentsubsectionTitle
-    \finishsubsection
-  \fi
-  \def\currentsubsectionTitle{#1}%
-  % The first paragraph of this subsection will be the next one:
-  \setcounter{currsubstart}{\value{paracnt}+1}%
-  \subsection*{#1}%
-}
-
-% --- Hook to finish the current subsection when a new chapter begins ---
-\pretocmd{\section}{\ifdefined\currentsubsectionTitle \finishsubsection \fi \clearpage}{}{}
-
-% --- PARAGRAPH COMMAND ---
-% \para writes a new paragraph. It prints inline the chapter label (e.g. "1 kap." in gray)
-% then increments the continuous paragraph counter and prints the number with "§".
-\newcommand{\para}{%
-  \par\noindent%
-  \llap{\textcolor{gray}{\thesection\ kap.\quad}}%
-  \stepcounter{paracnt}%
-  \textbf{\arabic{paracnt}\,§}\quad%
-}
-
-% --- Shortcut: \para with an optional argument ---
-% If you call \para[Heading], it will start a new organizational subsection with that heading,
-% write one paragraph, and then end the subsection automatically.
-\makeatletter
-\renewcommand{\para}[1][]{%
-  \ifblank{#1}{%
-    % If no optional argument is provided:
-    \par\noindent%
-    \llap{\textcolor{gray}{\thesection\ kap.\quad}}%
-    \stepcounter{paracnt}%
-    \textbf{\arabic{paracnt}\,§}\quad%
-  }{%
-    % If an optional argument is provided, first print the subsection heading:
-    \mysubsection{#1}%
-    \par\noindent%
-    \llap{\textcolor{gray}{\thesection\ kap.\quad}}%
-    \stepcounter{paracnt}%
-    \textbf{\arabic{paracnt}\,§}\quad%
-  }%
-}
-\makeatother
-
-% --- STYCKE (subdivision within a paragraph) ---
-% This counter is local to each paragraph. Here we want the first call to produce "2 st."
-\newcounter{stycke}[paracnt]
-\newcommand{\stycke}{%
-  \par\noindent%
-  \stepcounter{stycke}%
-  \textbf{\llap{\textcolor{gray}{\the\numexpr\value{stycke}+1\relax\,st.\quad}}}%
-}
-
-% --- HYPERREF SETTINGS ---
-\hypersetup{
-  pdftitle = {\@title},
-  pdfauthor = {\@author},
-  colorlinks=true,
-  linkcolor=black,
-  urlcolor=black,
-  citecolor=black,
-  pdfborder={0 0 0} % removes link borders
-}
+% If you need additional packages just for stadga.tex, put them here:
+%\usepackage{...}
 
 \begin{document}
-\makeheadfoot
+\begin{titlepage}
+  \thispagestyle{empty} % no header/footer
+  \vspace*{\fill}
+  \begin{center}
+    \includegraphics[width=250pt]{dteklogo_orange.pdf}\\[3em]
+    {\Huge Datateknologsektionen}\\[3em]
+    {\Huge \textbf{Stadga}}\\[1em]
+    Utkast: SR-Gruppen Ver 2\\[20em]
+  \end{center}
+  \vspace*{\fill}
+\end{titlepage}
 
-% Titlepage
-\vspace*{\fill}
-\begin{center}
-  {\Huge \textbf{Stadgar för Datateknologsektionen}}\\[1em]
-  \includegraphics[width=300pt]{dteklogo.pdf}\\[1em]
-  {\LARGE Chalmers, Göteborg}
-\end{center}
-\vspace*{\fill}
-\begin{center}
-  {\LARGE Utkast: SRGruppen Ver 1}
-\end{center}
-\vspace*{\fill}
+% After front page, we activate fancyhdr
+\makeheadfoot
 
 \setcounter{tocdepth}{2}
 \tableofcontents
@@ -149,299 +36,271 @@ Datateknologsektionen vid Chalmers, härmed benämnd teknologsektionen, är en i
 Teknologsektionen har till uppgift att verka för sammanhållning mellan medlemmarna och tillvarata deras gemensamma intressen i utbildnings- och studiesociala frågor.
 \para
 Teknologsektionen är fackligt, partipolitiskt och religiöst oberoende.
-\para[Medlemmar]
-Medlem i teknologsektionen är den som är inskriven vid utbildningsprogrammet Datateknik civilingenjör vid Chalmers eller ett av dess associerade masterprogram.
-\stycke
-Därutöver kan teknologsektionen ha hedersmedlemmar och stödmedlemmar.
-\stycke Dessutom skall medlem ha erlagt sektionsavgift. 
+\para
+Teknologsektionen har sitt säte i Göteborgs stad.
 \para[Verksamhetsår]
 Teknologsektionens verksamhetsår löper från och med den första maj.
 \para
 Ordinarie mandatperiod är 1:a maj - 30:e april.
 \para[Räkenskapsår]
 Teknologsektionens och dess kommittéers räkenskapsår löper från 1:a maj till 30:e april.
-
 %Medlemmar%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Medlemmar}
-\para[Rättigheter]
-Varje medlem har närvaro-, yttrande-, förslags-, och rösträtt på sektionsmöte.
-\stycke
-Endast medlem är valbar till förtroendepost inom teknologsektionen. Revisorerna är undantagna föregående regel. Förtroendepost innebär vald av sektionsmötet eller sektionsstyrelsen.
-\stycke
-Medlem har rätt att ta del av mötesprotokoll och teknologsektionens övriga handlingar.
-\para[Skyldigheter]
-Medlem är skyldig att rätta sig efter teknologsektionens bestämmelser.
-\para[Hedersmedlems rättigheter]
-Hedersmedlem har närvaro- och yttranderätt på sektionsmöte.
-\para[Stödmedlems rättigheter]
-Stödmedlemmar har närvarorätt på sektionsmöte. Stödmedlem har dessutom rätt att ta del av mötesprotokoll och teknologsektionens övriga handlingar.
+\para[Datateknologer] Ordinarie medlem i teknologsektionen, härmed benämnd datateknolog, är den som är inskriven vid utbildningsprogrammet Datateknik civilingenjör vid Chalmers eller ett av dess associerade masterprogram. 
+\para Teknologsektionen kan ha hedersmedlemmar och stödmedlemmar.
+\stycke Dessa medlemmar är inte datateknologer.
+\para[Rättigheter] Medlem har rätt att ta del av mötesprotokoll och teknologsektionens övriga handlingar.
+\para[Skyldigheter] Medlem är skyldig att rätta sig efter teknologsektionens bestämmelser.
+\para Medlem ska ha erlagt sektionsavgift.
+\para[Hedersmedlem] Till hedersmedlem kan kallas person som synnerligen främjat sektionens intressen och strävande.
+\para Förslag till hedersmedlem lämnas i skrivelse till sektionsstyrelsen senast sju läsdagar innan sektionsmötet undertecknad av minst 25 av sektionens medlemmar.
+\para Beslut om kallande av hedersmedlem fattas vid nästkommande sektionsmöte och är enbart giltigt om det antas med två tredjedelar av antalet röster.
+\para Antager kallad person en kallelse till hedersmedlem är denne officiellt hedersmedlem.
+\para[Stödmedlem] Stödmedlem är den person som tidigare varit datateknolog på sektionen samt har erlagt en administrationsavgift till sektionen.
+\para[Avgifter] Sektionens medlemsavgift fastställs av Chalmers Studentkår.
+\para Stödmedlem skall erlägga en med styrelsen beslutad administrationsavgift.
 %Organisation%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Organisation}
 \para[Verksamhetsutövande]
-Teknologsektionens verksamhet utövas på sätt denna stadga med tillhörande reglemente och ekonomiskt reglemente föreskriver genom:
+Teknologsektionens verksamhet utövas på sätt denna stadga med tillhörande reglemente och ekonomiskt reglemente föreskriver genom följande organ:
 \begin{enumerate}
 \item Sektionsmötet
-\item Sektionsstyrelse
-\item Teknologsektionens valberedning
-\item Teknologsektionens revisorer
+\item Valberedningen
+\item Sektionsstyrelsen
 \item Datatekniks Nämnd för Studier, DNS
-\item Sektionskommittéer
-\item Hobbykommittéer
-\item DatE-IT-kommittéen och DatE-IT-styrelsen
-
-\stycke
-Teknologsektionen arrangerar även en arbetsmarknadsmässa (DatE-IT) i samarbete med Elektroteknologsektionen Chalmers Studentkår (857202-2013) och Teknologsektionen Informationsteknik (857209-9524). Denna verksamhet regleras av DatE-ITs styrdokument. 
-  
+\item Teknologsektionens kommittéer
+\item Teknologsektionens intresseföreningar
+\item Teknologsektionens revisorer
 \end{enumerate}
-\para[Ansvarsförhållanden]
-Sektionsmötet är teknologsektionens högsta beslutande organ. Sektionsstyrelsen är sektionsmötets ställföreträdare.
-\stycke
-Sektionsmötet har till sitt förfogande valberedning, revisorer, kommittéer och sektionsstyrelsen.
-
-%Avsättning%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\section{Avsättning}
-\para
-Sektionsmötet kan avsätta alla individer invalda av sektionsmötet eller sektionssty-
-relsen. Avsättning kan endast ske efter att behörig begäran om avsättning hanteras
-av sektionsmötet. 
-\para
-Begäran om avsättning sker genom styrelsebeslut med 2/3 majoritet av styrelsens ledamöter, skriftlig begäran från 25 medlemmar eller av inspektor. Begäran om av- sättning av sektionsstyrelsen eller sektionsstyrelseledamot ska skickas till Talhens- presidiet. I övriga fall ska begäran skickas till sektionsstyrelsen och Talhenspresidiet.
-\para
-Personen som begäran avser ska ges möjlighet att yttra sig i frågan under sektions- mötet.
-\para
-För att bifalla begäran om avsättning krävs det att minst 2/3 av antalet röster är för avsättning. Omröstningen ska alltid ske med sluten votering.
-\para
-Vid sektionsstyrelsens avsättande ska interimsstyrelse och ny valberedning väljas. Interimssektionsstyrelsen utfärdar kallelse till extra sektionsmöte där ny ordinarie sektionsstyrelse ska väljas för resten av mandatperioden. Detta sektionsmöte ska hållas inom 15 läsdagar från det sektionsmöte då interimssektionsstyrelsen valdes och under ordinarie terminstid.
-\para
-Interimsstyrelsen övertar sektionsstyrelsens befogenheter och skyldigheter tills dess en ny sektionsstyrelse är vald.
+\stycke Teknologsektionen arrangerar även en arbetsmarknadsmässa (DatE-IT) i samarbete med Elektroteknologsektionen Chalmers Studentkår (857202-2013) och Teknologsektionen Informationsteknik (857209-9524). Denna verksamhet regleras av DatE-ITs styrdokument. 
+\para[Ansvarsförhållanden] Sektionsmötet är teknologsektionens högsta beslutande organ.
+\para Sektionsstyrelsen är sektionsmötets ställföreträdare.
+\para Sektionsmötet har till sitt förfogande valberedning, revisorer, kommittéer, intresseföreningar och sektionsstyrelsen.
+\para Sektionsstyrelsen har till sitt förfogande kommittéer och intresseföreningar.
+\para[Ansvarspost] Ansvarspost är ledamot i sektionsstyrelsen, ordförande och kassör i teknologsektionens organ.
+\para Medlem får ej inneha mer än en ansvarspost samtidigt på sektionen om inte
+sektionsmötet finner det lämpligt med kvalificerad (2⁄3) majoritet.
+\para Innehavaren av ansvarspost skall vara myndig.
+\para[Förtroendepost] Förtroendepost innehas av en person som av sektionsmötet är invald till Teknologsektionens organ, inspektor eller revisor.
+\para Endast datateknolog är valbar till förtroendepost inom teknologsektionen. 
+\stycke Undantag är kandidater till revisor, valberedning och inspektor som även utomstående är valbara till.
+\para[Misstroendeförklaring] Misstroendeförklaring kan riktas mot enskild förtroendevald eller ett sektionsorgan, exklusive sektionsföreningar, i sin helhet.
+\para Rätt att rikta misstroendeförklaring tillfaller:
+\begin{itemize}
+  \item två sektionsrevisorer.
+  \item två sektionsstyrelseledamöter.
+  \item tre ordföranderådsmedlemmar.
+  \item 25 medlemmar.
+\end{itemize}
+\para Misstroendeförklaring resulterar i misstroendevotum inför sektionsmötet. Misstroendeförklaring behandlas som motion.
+\para Misstroendeförklaring bifalles då minst 35 medlemmar och en kvalificerad (2⁄3) majoritet av de röstberättigade vid sektionsmöte är om beslutet ense.
+\para Bifallen misstroendeförklaring mot enskild förtroendevald resulterar i att den förtroendevalda entledigas från sitt uppdrag.
+\para Då sektionsstyrelsen har entledigats i sin helhet skall en interimstyrelse tillsättas. Interimstyrelsen utfärdar kallelse till extra sektionsmöte där ny ordinarie styrelse skall väljas. Detta sektionsmöte skall hållas inom 10 läsdagar. Interimstyrelsen övertar sektionsstyrelsens befogenheter och åtaganden, men får endast handha löpande ärenden.
+\para Då studienämnden har entledigats i sin helhet skall en interim studienämnd tillsättas. Sektionsstyrelsen utfärdar kallelse till extra sektionsmöte där ny ordinarie studienämnd skall väljas. Detta sektionsmöte skall hållas inom 10 läsdagar. Den interima studienämnden övertar studienämndens befogenheter och åtaganden, men får endast handha löpande ärenden.
+\para Då revisor entledigas så att det totala antalet revisorer understiger det stadgeenliga skall interima revisorer tillsättas. På nästkommande sektionsmöte skall erforderligt antal revisorer tillsättas.
+\para[Avsägelse] Avsägelse inlämnas skriftligen till sektionsstyrelsen senast tre dagar före sektionsmötet för fastställande.
 
 %Sektionsmötet%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Sektionsmötet}
-\para[Befogenheter]
-Sektionsmötet är teknologsektionens högsta beslutande organ.
-\para[Sammanträden]
-Det skall hållas fyra ordinarie sektionsmöten, ett per läsperiod. Utöver detta kan extra sektionsmöten hållas.
-\para[Utlysande]
-Sektionsmötet sammanträder på kallelse av talhenspresidiet eller av sektionsstyrelsen.
-\stycke
-Rätt att hos sektionsstyrelsen eller talhenspresidiet begära utlysande av sektionsmöte tillkommer ledamot i sektionsstyrelsen, inspektor, kårens inspektor, kårstyrelsen, teknologsektionens revisorer eller minst 25 av teknologsektionens medlemmar. Sådant möte ska hållas inom tio läsdagar.
-\stycke
-\label{sec:sektionsmote_utlysande}
-Sektionsmöte ska utlysas genom att kallelse anslås minst fem läsdagar i förväg.
-\stycke
-Kallelse ska innehålla samtliga inkomna motioner, propositioner och bemötanden.
-\para[Åligganden]
-Senast dagen före ordinarie mandatperiods början skall följande behandlas på sektionsmöte:
+\para[Sammanträden] Det skall hållas fyra ordinarie sektionsmöten, ett per läsperiod. Utöver detta kan extra sektionsmöten hållas.
+\para[Utlysande] Sektionsmötet sammanträder på kallelse av talhenspresidiet eller av sektionsstyrelsen.
+\para Rätt att hos sektionsstyrelsen eller talhenspresidiet begära utlysande av sektionsmöte tillkommer ledamot i sektionsstyrelsen, inspektor, kårens inspektor, kårstyrelsen, teknologsektionens revisorer eller minst 25 datateknologer. Sådant möte ska hållas inom tio läsdagar.
+\para Sektionsmöte ska utlysas genom att kallelse anslås minst fem läsdagar i förväg.
+\para Kallelse till sektionsmöte ska innehålla samtliga inkomna motioner, propositioner och bemötanden.
+\para[Åligganden] Senast dagen före ordinarie mandatperiods början skall följande behandlas på sektionsmöte:
 \begin{itemize}
 \item Omfördelning av sektionens och dess organs tillgångar.
 \item Val av sektionsstyrelse.
 \item Val av revisorer.
 \item Val av inspektor om så är aktuellt.
 \end{itemize}
-\stycke
-Senast dagen före verksamhetsårets början skall följande behandlas på sektionsmöte:
+\para Senast dagen före verksamhetsårets början skall följande behandlas på sektionsmöte:
 \begin{itemize}
 \item Sektionsavgift för de två kommande terminerna.
 \item Fastställande av preliminär budget för nästkommande verksamhetsår.
 \end{itemize}
-\stycke
-Senast sex månader efter verksamhetsårets början skall följande behandlas på sektionsmöte:
+\para Senast sex månader efter verksamhetsårets början skall följande behandlas på sektionsmöte:
 \begin{itemize}
 \item Sektionens års- och revisionsberättelse för föregående verksamhetsår.
 \item Beslut om ansvarsfrihet.
 \item Fastställande av budget för innevarande verksamhetsår.
 \end{itemize}
-\para[Beslutförhet]
-Sektionsmötet är beslutsmässigt om mötet är behörigt utlyst enligt stadgans kapitel~\ref{sec:sektionsmote_utlysande}.
+\para[Beslutförhet] Sektionsmötet är beslutsmässigt om mötet är behörigt utlyst enligt detta kapitel.
 \stycke
-Om färre än 40 medlemmar är närvarande då beslut ska fattas, kan detta endast ske om ingen yrkar på bordläggning. Detsamma gäller beslut i frågor som ej har varit anslagna fem läsdagar i förväg.
-\para[Motion]
-Medlem som önskar ta upp fråga på föredragningslistan skall anmäla detta skriftligen till sektionsstyrelsen och Talhenspresidiet senast sju läsdagar före sektionsmöte.
-\para[Överklagande]
-Beslut av sektionsmötet som strider mot kårens eller sektionens stadga, reglemente, ekonomiska reglemente eller policy får undanröjas av kårfullmäktige. Sådant beslut ska tas upp till prövning om det begärs av en kårmedlem då det rör kårens stadga, eller sektionsmedlem då det rör teknologsektionens stadga, reglemente, ekonomiska reglemente eller policy.
-\para[Omröstning]
-Röstning med fullmakt får ej ske.
-\stycke
-Omröstning skall ske öppet, om ej sluten votering begärs.
-\stycke
-Vid lika röstutfall äger mötesordförande utslagsröst, utom vid personval då lotten avgör.
-\stycke
-Då flera förslag ställs mot varandra skall röstningsförfarandet fastslås innan omröstning påbörjas.
-\stycke
-Alla frågor som behandlas på sektionsmötet avgörs med enkel röstövervikt om inget annat anges i stadgan. Nedlagda röster räknas ej.
-\para[Närvarosätt]
-Närvarorätt tillkommer medlem, hedersmedlem, stödmedlem, kårledningsledamöter, inspektor, kårens inspektor, revisorer samt av mötet adjungerade icke-medlemmar.
-\para[Yttranderätt]
-Yttranderätt tillkommer medlem, hedersmedlem, kårledningsledamöter, inspektor, kårens inspektor, revisorer samt av mötet adjungerade icke-medlemmar.
-\para[Förslagsrätt]
-Förslagsrätt tillkommer medlem, inspektor samt av mötet adjungerade icke-medlemmar.
-\para[Rösträtt]
-Rösträtt tillkommer medlem.
-\para[Protokoll]
-Sektionsmötesprotokoll skall justeras av två av mötet valda justeringsmän. Justerat protokoll ska anslås senast tio läsdagar efter mötet.
+Om färre än 40 datateknologer är närvarande då beslut ska fattas, kan detta endast ske om ingen yrkar på bordläggning.
+\stycke Detsamma gäller beslut i frågor som ej har varit anslagna fem läsdagar i förväg.
+\para[Motion] Datateknolog som önskar ta upp fråga på föredragningslistan skall anmäla detta skriftligen till sektionsstyrelsen och Talhenspresidiet senast sju läsdagar före sektionsmöte.
+\para[Överklagande] Beslut av sektionsmötet som strider mot kårens eller Teknologsektionens stadga, reglemente, ekonomiska reglemente eller policy får undanröjas av kårfullmäktige.
+\stycke Sådant beslut ska tas upp till prövning om det begärs av en kårmedlem då det rör kårens stadga, eller datateknolog då det rör teknologsektionens stadga, reglemente, ekonomiska reglemente eller policy.
+\para[Omröstning] Röstning med fullmakt får ej ske.
+\para Omröstning skall ske öppet, om ej sluten votering begärs.
+\para Vid lika röstutfall äger mötesordförande utslagsröst, utom vid personval då lotten avgör.
+\para Då flera förslag ställs mot varandra skall röstningsförfarandet fastslås innan omröstning påbörjas.
+\para Alla frågor som behandlas på sektionsmötet avgörs med enkel röstövervikt om inget annat anges i stadgan. Nedlagda röster räknas ej.
+\para[Rättigheter] Närvarorätt tillkommer alla medlemmar, kårledningsledamöter, inspektor, kårens inspektor, revisorer samt av mötet adjungerade icke-medlemmar.
+\para Yttranderätt tillkommer datateknolog, hedersmedlem, kårledningsledamöter, inspektor, kårens inspektor, revisorer samt av mötet adjungerade icke-medlemmar.
+\para Förslagsrätt tillkommer datateknolog, inspektor samt av mötet adjungerade icke-medlemmar.
+\para Rösträtt tillkommer datateknolog.
+\para[Persondiskussion] Undantag för samtliga rättigheter är då individ är ämnet av en utlyst persondiskussion. 
+\para[Protokoll] Sektionsmötesprotokoll skall justeras av två av mötet valda justeringsmän. Justerat protokoll ska anslås senast tio läsdagar efter mötet.
 
 %Valberedning%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Valberedning}
-\para[Sammansättning]
-Sammankallande utses av sektionsstyrelsen.
-\stycke
-Representanter i valberedningen fastställs i reglementet.
-\para[Ansvar]
-Valberedningen ansvarar för samtliga nomineringar till förtroendeposter på teknologsektionen.
-\para[Anslag]
-Valberedningens nomineringar skall anslås i kallelsen.
-\para[Fri nominering]
-Fri nominering är tillåten till alla poster utom till sektionsstyrelsens ordförande och kassör. Nomineringsbara till dessa poster är endast de som minst 24 timmar innan sektionsmöte då val ska ske anmält sitt intresse till sektionsstyrelsen.
+\section{Valberedningen och personval}
+\para[Sammansättning] Teknologsektionens valberedning skall väljas av sektionsmötet på förslag av sektionsstyrelsen.
+\para Valberedningen skall bestå av minst fyra ledamöter varav en sammankallande.
+\para Valberedningen har till sitt förfogande respektive sektionsorgan för rådgivning.
+\para Ledamot i valberedningen behöver ej vara medlem.
+\para[Beslutsförhet] Valberedningen är beslutsför då en enkel (1⁄2) majoritet av dess ledamöter är närvarande.
+\para Den sammankallande ledamoten har utslagsröst vid lika röstetal.
+\para[Åligganden] Valberedningen ansvarar för samtliga nomineringar till förtroendeposter på teknologsektionen.
+\stycke Undantag för detta är nomineringar till valberedningen.
+\para Valberedningens nomineringar skall anslås i kallelsen sju dagar före valförättandet.
 
 %Sektionsstyrelsen%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Sektionsstyrelsen}
-\para[Befogenheter]
-Sektionsstyrelsen handhar i överensstämmelse med denna stadga, befintligt reglemente, befintligt ekonomiskt reglemente samt av sektionsmötet fattade beslut den verkställande ledningen av sektionens verksamhet.
-\para[Sammansättning]
-Sektionsstyrelsen består av:
+\para[Definition och ansvar] Sektionsstyrelsen handhar i överensstämmelse med denna stadga, befintligt reglemente, befintligt ekonomiskt reglemente samt av sektionsmötet fattade beslut den verkställande ledningen av sektionens verksamhet.
+\para Sektionsstyrelsen består av ett presidium och övriga ledamöter.
+\para Presidiet består av:
 \begin{itemize}
 \item Ordförande
 \item Vice ordförande
 \item Kassör
 \item Sekreterare
 \item SAMO
-\item i reglementet fastställda medlemmar
 \end{itemize}
-Ordförande och kassör i sektionsstyrelsen skall vara myndiga.
-\para[Rättigheter]
-Sektionsstyrelsen äger rätt att i namn och emblem använda teknologsektionens namn och dess symboler i enlighet med Chalmers Studentkårs policies.
-\para[Ansvarighet]
-Sektionsstyrelsen ansvarar inför sektionsmötet för teknologsektionens verksamhet och ekonomi.
-\para[Firmateckning]
-Ordförande i sektionsstyrelsen samt dess kassör tecknar teknologsektionens firma i förening. % uppdatering
-\para[Styrelsemöte]
-Sektionsstyrelsen sammanträder minst tre gånger per läsperiod.
-\para[Utlysande]
-Sektionsstyrelsen sammanträder på kallelse av ordförande eller vice ordförande i sektionsstyrelsen.
-\stycke
-Medlem av sektionsstyrelsen äger rätt att hos vice ordförande i sektionsstyrelsen begära utlysande av styrelsemöte. Sådant möte skall hållas inom 5 läsdagar.
-\para[Beslutförhet]
-Sektionsstyrelsen är beslutsmässigt när minst 50\% av medlemmarna är närvarande. Ordförande eller vice ordförande skall närvara.
-\para[Överklagande]
-Beslut av sektionsstyrelsen som strider mot kårens eller teknologsektionens stadga, reglemente, ekonomiska reglemente samt policy får undanröjas av kårens fullmäktige. Sådant beslut skall tas upp till prövning om det begärs av en kårmedlem då det rör kårens stadga, eller av teknologsektionsmedlem då det rör sektionens stadga, reglemente, ekonomiska reglemente eller policy.
-\para[Protokoll]
-Protokoll ska föras vid styrelsemöte, justeras av två medlemmar av
-sektionsstyrelsen och anslås senast fem läsdagar efter mötet.
+\para Övriga ledamöter i sektionsstyelsen regleras i reglemente.
+\para Sektionsstyrelsen äger rätt att i namn och emblem använda teknologsektionens namn och dess symboler i enlighet med Chalmers Studentkårs policies.
+\para Sektionsstyrelsen ansvarar inför sektionsmötet för teknologsektionens verksamhet och ekonomi.
+\para[Firmateckning] Ordförande i sektionsstyrelsen samt dess kassör tecknar teknologsektionens firma i förening.
+\para[Styrelsemötet] Sektionsstyrelsen sammanträder minst tre gånger per läsperiod.
+\para Sektionsstyrelsen sammanträder på kallelse av ordförande eller vice ordförande i sektionsstyrelsen.
+\para Medlem av sektionsstyrelsen äger rätt att hos vice ordförande i sektionsstyrelsen begära utlysande av styrelsemöte.
+\stycke Sådant möte skall hållas inom 5 läsdagar.
+\para Sektionsstyrelsen är beslutsmässigt när minst 50\% av medlemmarna är närvarande. Ordförande eller vice ordförande skall närvara.
+\para Protokoll ska föras vid styrelsemöte, justeras av två medlemmar av sektionsstyrelsen och anslås senast fem läsdagar efter mötet.
+\para[Överklagande] Beslut av sektionsstyrelsen som strider mot kårens eller teknologsektionens stadga, reglemente, ekonomiska reglemente samt policy får undanröjas av kårens fullmäktige.
+\stycke Sådant beslut skall tas upp till prövning om det begärs av en kårmedlem då det rör kårens stadga, eller av teknologsektionsmedlem då det rör sektionens stadga, reglemente, ekonomiska reglemente eller policy.
 
 %Kommittéer%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Kommittéer}
+\para[Definition] Kommitté ska ha ordförande och ett i reglementet fastställt antal förtroendeposter.
+\para Kommitté ska verka för teknologsektionens bästa och ha en i reglementet fastställd uppgift.
+\para[Val] Samtliga poster tillsätts av sektionsmötet om inte annat bestäms i reglementet. 
+\para[Rättigheter] Kommitté äger rätt att i namn och emblem använda teknologsektionens namn och dess symboler i enlighet med Chalmers Studentkårs policyer.
+\para[Skyldigheter] Kommitté är skyldig att rätta sig efter teknologsektionens stadga, reglemente, ekonomiska reglemente och övriga fattade beslut.
+\para[Revision] Sektionskommittéernas verksamhet och ekonomi granskas av teknologsektionens revisorer.
+\para[Förteckning] Teknologsektionens kommittéer förtecknas i reglementet.
+
+%Intresseföreningar%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Intresseföreningar}
 \para[Definition]
-Kommitté ska ha ordförande och ett i reglementet fastställt antal förtroendeposter.
-\stycke
-Kommitté ska verka för teknologsektionens bästa och ha en i reglementet fastställd uppgift.
-\para[Val]
-Samtliga poster tillsätts av sektionsmötet om inte annat bestäms i reglementet. 
-\stycke
-  Val till kommitté kan beredas av valberedning enligt kapitel 5. % \ref{sec:valberedning}.
-  \stycke
-Valbar till ledamot i kommitté är medlem. Valbar till ordförande, eller i förekommande fall kassör, är den som också är myndig. Ytterligare bestämmelser för valbarhet kan finnas i reglementet.
+Intresseförening är en sammanslutning av sektionens medlemmar och stödmedlemmar med ett gemensamt intresse. Intresseföreningen ska ha en styrelse bestående av föreningens medlemmar. Ordförande i föreningsstyrelsen väljs av sektionsmötet.
 
-\para[Rättigheter]
-Kommitté äger rätt att i namn och emblem använda teknologsektionens namn och dess symboler i enlighet med Chalmers Studentkårs policyer.
-\para[Skyldigheter]
-Kommitté är skyldig att rätta sig efter teknologsektionens stadga, reglemente, ekonomiska reglemente och övriga fattade beslut.
-\para[Revision]
-Sektionskommittéernas verksamhet och ekonomi granskas av teknologsektionens revisorer.
-\para[Förteckning]
-Teknologsektionens kommittéer förtecknas i reglementet.
+\para Varje sektionsmedlem skall ha rätt till medlemskap. Föreningsmedlem som motverkar föreningens syften kan dock uteslutas av föreningsstyrelsen.
+\para[Syfte] Intresseförening skall ha en av sektionsstyrelsen godkänd stadga. Dessutom är föreningen skyldig att rapportera till sektionsstyelsen då deras stadga förändrats.
+\para Intresseförening skall verka för teknologsektionens bästa och ha ett syfte i sin egen stadga.
+\para Teknologsektionens intresseföreningar är de i reglemente förtecknade.
+\para[Rättigheter]Intresseförening äger rätt att i namn och emblem använda teknologsektionens namn och symboler.
+\para[Skyldigheter] Intresseförening är skyldig att känna till och rätta sig efter teknologsektionens stadgar, reglemente, ekonomiska reglemente, policies, övriga handlingar och beslut.
+\para[Ekonomi] Intresseföreningens ekonomi skall ligga under teknologsektionen.
+\para Teknologsektionens revisorer har rätt att granska föreningens verksamhet och ekonomi. 
 
-%Hedersmedlemmar%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Hedersmedlemmar}
-\para[Grundkrav]
-Till hedersmedlem kan kallas person som synnerligen främjat sektionens intressen och strävande.
-\para[Förslag och kallande]
-Förslag till hedersmedlem lämnas i skrivelse till sektionsstyrelsen senast sju läsdagar innan sektionsmötet undertecknad av minst 25 av sektionens medlemmar. Beslut om kallande av hedersmedlem fattas vid nästkommande sektionsmöte och är enbart giltigt om det antas med två tredjedelar av antalet röster. Antager kallad person kallelsen är han/hon officiellt hedersmedlem.
-
-\section{Stödmedlemmar}
-Stödmedlem är den person som tidigare varit medlem på sektionen samt har erlagt en administrationsavgift till sektionen.
-
-%Skyddshelgon och sektionsfärger%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Skyddshelgon och sektionsfärger}
-\para[Skyddshelgon]
-Teknologsektionens skyddshelgon är Hacke Hackspett.
-\para[Sektionsfärg]
-Teknologsektionens färg är orange.
+%Teknologsektionens identitet %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Teknologsektionens identitet}
+\para[Skyddshelgon] Teknologsektionens skyddshelgon är Hacke Hackspett.
+\para[Sektionsfärg] Teknologsektionens färg är orange.
+\para[Sektionslokal] Teknologsektionens lokal benäms Basen.
 
 %Protokoll och anslagning%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Protokoll och anslagning}
-\para[Allmänt]
-Protokoll som föres i teknologsektionens olika organ skall innehålla anteckningar om ärendenas art, samtliga ställda och ej återtagna yrkanden, beslut samt särskilda yttranden och reservationer.
-\para[Anslagning]
-Meddelanden och beslut är behörigt anslagna då de anslås på teknologsektionens officiella anslagstavla. Teknologsektionens officiella anslagstavla definieras i reglementet.
+\para[Allmänt] Protokoll som föres i teknologsektionens olika organ skall innehålla anteckningar om ärendenas art, samtliga ställda och ej återtagna yrkanden, beslut samt särskilda yttranden och reservationer.
+\para[Anslagning] Meddelanden och beslut är behörigt anslagna då de anslås på teknologsektionens officiella anslagstavla. Teknologsektionens officiella anslagstavla definieras i reglementet.
 
 %Revision och ansvarsfrihet%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Revision och ansvarsfrihet}
-\para[Revisorer]
-Sektionsmötet utser 2–4 lekmannarevisorer med uppgift att granska teknologsektionens verksamhet och ekonomi under verksamhetsåret.
-\stycke
-Teknologsektionens revisorer kan ej inneha annan förtroendepost på teknologsektionen under sitt verksamhetsår.
-\stycke
-Räkenskaper och övriga handlingar skall tillställas revisorerna senast 15 läsdagar före sektionsmöte.
-\para[Åligganden]
-Det åligger revisorerna att skicka in revisionsberättelser till talhenspresi-
-diet senast 5 läsdagar före ordinarie sektionsmöte.
-\stycke
-Revisionsberättelsen skall innehålla yttrande ifråga om ansvarsfrihet för berörda personer.
-\para[Ansvarsfrihet]
-Ansvarsfrihet är beviljad berörda personer då sektionsmötet fattat beslut om detta.
-\stycke
-Skulle förtroendevald på teknologsektionen med ekonomiskt ansvar avgå före mandatperiodens slut, skall revision företagas.
-
-%Avgifter%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Avgifter}
-\para[Sektionsavgift]
-Varje medlem skall erlägga beslutad sektionsavgift.
-\para[Administrationsavgift]
-Stödmedlem skall erlägga en beslutad administrationsavgift.
+\para[Revisorer] Sektionsmötet utser 2–4 lekmannarevisorer med uppgift att granska teknologsektionens verksamhet och ekonomi under verksamhetsåret.
+\stycke Teknologsektionens revisorer kan ej inneha annan förtroendepost på teknologsektionen under sitt verksamhetsår.
+\stycke Räkenskaper och övriga handlingar skall tillställas revisorerna senast 15 läsdagar före sektionsmöte.
+\para[Åligganden] Det åligger revisorerna att skicka in revisionsberättelser till talhenspresidiet senast 5 läsdagar före ordinarie sektionsmöte.
+\stycke Revisionsberättelsen skall innehålla yttrande ifråga om ansvarsfrihet för berörda personer.
+\para[Ansvarsfrihet] Ansvarsfrihet är beviljad berörda personer då sektionsmötet fattat beslut om detta.
+\stycke Skulle förtroendevald på teknologsektionen med ekonomiskt ansvar avgå före mandatperiodens slut, skall revision företagas.
 
 %Teknologsektionens upplösning%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Teknologsektionens upplösning}
-\para[Beslut om upplösning]
-Teknologsektionen upplöses genom beslut på två på varandra följande sektionsmöten, med minst femton läsdagars mellanrum, med minst 60 eller samtliga medlemmar närvarande. För att beslutet skall vara giltigt krävs att det antas med tre fjärdedelar av antalet röster. Begäran om teknologsektionens upplösning måste lämnas in till styret och talhenspresidiet senast 7 läsdagar innan den första läsningen sker.
-\para[Tillgångar och nystart]
-Om sektionsmötet beslutar att upplösa teknologsektionen skall samtliga dess tillgångar och skulder, som framgår av upprättad balansräkning, i och med upplösningen tillfalla Chalmers studentkår att förvalta tills dess att en ny förening eller teknologsektion bildas som representerar studerande på utbildningsprogrammet för Datateknik, Chalmers.
+\para[Beslut om upplösning] Teknologsektionen upplöses genom beslut på två på varandra följande sektionsmöten, med minst femton läsdagars mellanrum, med minst 60 eller samtliga medlemmar närvarande. För att beslutet skall vara giltigt krävs att det antas med tre fjärdedelar av antalet röster. Begäran om teknologsektionens upplösning måste lämnas in till styret och talhenspresidiet senast 7 läsdagar innan den första läsningen sker.
+\para[Tillgångar och nystart] Om sektionsmötet beslutar att upplösa teknologsektionen skall samtliga dess tillgångar och skulder, som framgår av upprättad balansräkning, i och med upplösningen tillfalla Chalmers studentkår att förvalta tills dess att en ny förening eller teknologsektion bildas som representerar studerande på utbildningsprogrammet för Datateknik, Chalmers.
 %Ändrings- och tolkningsfrågor%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Ändrings- och tolkningsfrågor}
-\para[Stadgeändringar]
-Ändring av denna stadga kan endast göras av sektionsmötet. För att vara giltig måste ändringen antas med två tredjedelar av antalet röster vid två på varandra följande sektionsmöten, varav minst ett ordinarie, med minst tio läsdagars mellanrum.
-\stycke
-Ändring av eller tillägg till denna stadga skall godkännas av kårstyrelsen.
-\para[Reglementesändring]
-Ändring av eller tillägg till reglementet eller det ekonomiska reglementet kan endast göras av sektionsmötet. För att vara giltig måste ändringen antas med två tredjedelar av antalet röster.
-\para[Ändring eller tolkning av DatE-ITs styrdokument]
-Ändringar i, och tolkning av DatE-ITs styrdokument görs enligt den process som definieras i DatE-ITs styrdokument.
-\para[Tolkningstvist]
-Uppstår tolkningstvist om dessa stadgars tolkning, tolkas stadgan av inspektor för avgörande. Om sådan ej finns avgörs frågan av Chalmers studentkårs inspektor.
-\stycke
-Vid tolkning av reglemente eller ekonomiskt reglemente gäller, tills frågan avgjorts av sektionsmötet, sektionsstyrelsens tolkning.
+\para[Stadgeändringar] Ändring av denna stadga kan endast göras av sektionsmötet. För att vara giltig måste ändringen antas med två tredjedelar av antalet röster vid två på varandra följande sektionsmöten, varav minst ett ordinarie, med minst tio läsdagars mellanrum.
+\stycke Ändring av eller tillägg till denna stadga skall godkännas av kårstyrelsen.
+\para[Reglementesändring] Ändring av eller tillägg till reglementet eller det ekonomiska reglementet kan endast göras av sektionsmötet. För att vara giltig måste ändringen antas med två tredjedelar av antalet röster.
+\para[Ändring eller tolkning av DatE-ITs styrdokument] Ändringar i, och tolkning av DatE-ITs styrdokument görs enligt den process som definieras i DatE-ITs styrdokument.
+\para[Tolkningstvist] Uppstår tolkningstvist om dessa stadgars tolkning, tolkas stadgan av inspektor för avgörande. Om sådan ej finns avgörs frågan av Chalmers studentkårs inspektor.
+\stycke Vid tolkning av reglemente eller ekonomiskt reglemente gäller, tills frågan avgjorts av sektionsmötet, sektionsstyrelsens tolkning.
 
 %Inspektor%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Inspektor}
-\para[Allmänt]
-Inspektor skall ägna uppmärksamhet åt och stödja teknologsektionens verksamhet. Inspektor skall därvid hållas underrättad om teknologsektionens verksamhet. Inspektor har rätt att ta del av teknologsektionens protokoll och övriga handlingar.
-\para[Val]
-Inspektor väljs av sektionsmötet för en tid av två kalenderår.
-\newpage
+\para[Allmänt] Inspektor skall ägna uppmärksamhet åt och stödja teknologsektionens verksamhet. Inspektor skall därvid hållas underrättad om teknologsektionens verksamhet. Inspektor har rätt att ta del av teknologsektionens protokoll och övriga handlingar.
+\para[Val] Inspektor väljs av sektionsmötet för en tid av två kalenderår.
 
 %Hedersbetygelser%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Hedersbetygelser}
-\para[Allmänt]
-Teknologsektionen kan som tack eller hedersbetygelse utdela barspeglar.
-\para[Kriterier]
-För att mottagare skall anses värdig att mottaga en barspegel bör något av nedanstående kriterium vara uppfyllda:
+\para[Allmänt] Teknologsektionen kan som tack eller hedersbetygelse utdela barspeglar.
+\para[Kriterier] För att mottagare skall anses värdig att mottaga en barspegel bör något av nedanstående kriterium vara uppfyllda:
 \begin{itemize}
 \item ha gjort sektionen en betydande tjänst
 \item ha gjort sektionen en betydande björntjänst
 \item vara monark och fylla jämt
 \end{itemize}
-\para[Införskaffande]
-Det åligger sektionsstyrelsen att tillse att erforderlig mängd barspeglar finnes.
+\para[Införskaffande] Det åligger sektionsstyrelsen att tillse att erforderlig mängd barspeglar finnes.
 
-
+\section{TO-DO och to-consider:}
+\begin{itemize}
+  \item Definiera vad en persondiskussion är och vem som har rätt att kalla till en sådan. (SAMO i alla fall och mötesordförande då det finns kandidater som ej har valberetts?)
+  \item Personinval ska alltid vara slutna då det finns fler än 1 kandidater till en post.
+  \item Är Ranked-choice voting (RCV) något att kolla på? Borde testas först, annars är detta väldigt mycket bättre än att skapa konstellationer och rösta.
+  \item Instruktioner till organ istället för vårt gigantiska reglemente?
+  \item Standardisera överlämningar?
+  \item Skydda mer av sektionsmötets process enligt stadgan. För mycket lämnas upp till THPs vilja och tolkning atm.
+  \item Definiera hur voteringar, slutna voteringar, digitala voteringar ska gå till.
+  \item Lekmannarevisorer istället för revisorer. Eller ska vi bara kalla dem för revisorer istället?
+  \item Ekonomigrupp istället för flera sektionskassörer? Vi måste få revision och ansvarsfriheter att hanteras regelbundet.
+  \item 3/4 majoritet av närvarande och röstberättigade för att ändra reglemente eller 1/2 av närvarande och röstberättigade över två möten för att ändra reglemente?
+  \item Ändring av styrdokument bör dokumenteras i respektive appendix.
+  \item Förtydliga vem som kan riva upp beslut av vad. Styrelsen kan riva upp styrelsebeslut, sektionsmötet kan riva upp sektionsmötesbeslut, ej ändringar av stadga eller reglemente.
+  \item Förtydliga hur styrdokumenten rangordnas och vilka som gäller vid motsägelser mellan dem.
+  \item Tillfälliga kommittéer. Styrelsen kan starta och upplösa sådana.
+  \item Definiera DNS i stadgan.
+  \item Definiera Talhenspresidiet i stadgan.
+  \item Representation? Komittéer som är repsbannade bör kunna fråntas sin rätt att bära märket/ovve utan att inskränka på stadgan.
+  \item Vill vi skilja på kommittéer med/utan egen kassör? Med = kommitté, utan = utskott?
+  \item Vi bör bygga in något form av skydd för sektionskassören. Det är inte rimligt att vi kan starta kommittéer och föreningar utan kassörer och att sektkass får inf med jobb slängt på sig. Att tillsätta fler kassörer är inte heller en hållbar lösning. Det blir otroligt mycket revision med sedan. En gång i tiden talade man om att kassören skulle vara arvoderad.
+  \item Kolla över intresseföreningar.
+  \item Hantera vakantsättningar och fyllnadsval.
+  \item Definiera ordföranderådet.
+\end{itemize}
+\section{Changelog:}
+Ännu inte helt fullständig, men försöker att få med det större.
+\begin{itemize}
+  \item Delat upp många stora paragrafer i dess olika stycken. Vissa har blivit egna paragrafer.
+  \item Mindre kapitel har flyttats, t.ex. stödmedlem, hedersmedlem och avgifter har blivit del av medlemmar.
+  \item Definierat ansvarsposter under Organisation.
+  \item Definierat företroendeposter under Organisation.
+  \item Strykt kapitlet om avsättning i sin helhet.
+  \item Lagt till nya paragrafer om Misstroendeförklaring under Organisation.
+  \item Lagt till en paragraf om avsägelse under Organisation. Sektmötet måste hantera det, man kan inte bara släppa sina ansvar och säga hejdå.
+  \item Tagit bort vissa rättigheter under Medlemmar då de definieras under Sektionsmötet.
+  \item Yote den gamla Valberedningen. Den tillför inget nyttigt och fungerar otroligt konstigt om man kollar på hur valberedningar ska fungera. Extremt skumt att man utser sina efterträdare.
+  \item Personinval ska ALLTID vara slutna då det finns fler kandidater till en post.
+  \item Vi fungerar tydligen inte utan DNS, så vid avsättande av DNS ska ny (interim) väljas omedelbart.
+  \item Samma sak med revisorerna.
+  \item Kastat om lite i ordningen som vi utövar vår verksamhet. Revisorerna är ju sist, de gör sitt efter att största delen av verksamheten är utförd.
+  \item Styrelsen har inte revisorerna eller valberedningen till sitt förfogande. Som sagt, väldigt skumt om styrelsen kan styra över deras revision eller valberedningen till deras efterträdare.
+  \item La till kapitlet om intresseföreningar enligt styrets prop. Bör ses över.
+  \item La till säte för sektionen under Allmänt.
+  \item Döpte om sektionshelgon och sektionsfärg till sektionens identitet.
+  \item La till paragraf om sektionslokal under Sektionens identitet.
+  \item Ändrat paragrafen om sektionsavgift. Den faställs av kåren.
+\end{itemize}
 \end{document}
