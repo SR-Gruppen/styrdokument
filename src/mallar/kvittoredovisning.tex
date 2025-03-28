@@ -1,9 +1,113 @@
-\documentclass[a4paper]{dtek}
-
-\setcounter{secnumdepth}{5}
-\title{Kvittoredovisning}
-\date{Utkast: SR-Gruppen Ver 2}
-
+\documentclass[a4paper,11pt]{article}
+%
+% --- Packages ---
+\usepackage[swedish]{babel}
+\usepackage{fontspec}         
+\defaultfontfeatures{Ligatures=TeX}
+\setmainfont{PT Serif}
+\newfontfamily\opensans{Open Sans}
+%
+\usepackage{parskip}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{csquotes}
+\usepackage[unicode]{hyperref}
+\usepackage{lastpage}
+\usepackage{xparse}
+\usepackage{etoolbox}
+\usepackage[includeheadfoot,top=1.0cm,bottom=3.5cm,left=2.5cm,right=2.5cm]{geometry}
+\usepackage{xcolor}
+\raggedbottom
+%
+% --- Hyperref Setup ---
+\hypersetup{
+  pdfauthor={Datateknologsektionen, Chalmers studentkår},
+  pdfsubject={Kvittoredovisning},
+  colorlinks=false,
+  pdfborder={0 0 0}
+}
+%
+% --- Header Setup ---
+\pagestyle{fancy}
+\setlength{\headheight}{25mm}
+\setlength{\headsep}{15mm}
+\fancyhf{} % clear header/footer
+%
+% Left header: logo and text (from dtek.cls design)
+\lhead{%
+  \opensans
+  \hspace{-2em}%
+  \raisebox{-2em}{\includegraphics[width=20mm]{dteklogo_orange}}%
+  \hspace{1em}%
+  \parbox[b]{0.5\textwidth}{\bfseries Datateknologsektionen\\[-0.2em]Chalmers Studentkår}%
+}
+%
+% Right header: page number and fillable total-pages field
+\rhead{%
+  \opensans
+  Page \thepage\ of \TextField[name=totalPages,width=1cm, borderstyle=U, borderwidth=0.5]{}%
+}
+%
+% Remove header rule
+\renewcommand{\headrulewidth}{0pt}
+% No footer
+\fancyfoot{}
+%
+% --- Begin Document ---
 \begin{document}
-Placeholder
+\begin{Form} % Begin fillable PDF form
+\thispagestyle{fancy}
+
+\vbox to \textheight{%
+  \noindent
+  \begin{minipage}[t][\textheight][t]{0.48\textwidth}
+    {\Large \bfseries Kvittoredovisning}\\[1em]
+    \raggedright
+    \textbf{Personal details}\\[0.5em]
+    First– and lastname: \TextField[name=fullname,width=0.95\linewidth, borderstyle=U, borderwidth=0.5]{}\\[0.5em]
+    Phone number: \TextField[name=phone,width=0.95\linewidth, borderstyle=U, borderwidth=0.5]{}\\[0.5em]
+    Bank: \CheckBox[name=bank_handelsbanken,width=1em,bordercolor=black]{} Handelsbanken \quad 
+    \CheckBox[name=bank_other,width=1em,bordercolor=black]{} Other\\[0.5em]
+    Clearing: \TextField[name=clearing,width=0.45\linewidth, borderstyle=U, borderwidth=0.5]{} \quad
+    Account number: \TextField[name=account,width=0.45\linewidth, borderstyle=U, borderwidth=0.5]{}\\[1em]
+    
+    1 \quad Compulsory first time paying an expenditure to a treasurer.\\[1em]
+    
+    \textbf{Expenditure details}\\[0.5em]
+    Background: \TextField[name=background,width=0.95\linewidth, borderstyle=U, borderwidth=0.5]{}\\[1em]
+    
+    \textbf{Paying Committee}\\[0.5em]
+    Purchase date (YYYY-MM-DD): \TextField[name=purchase_date,width=0.45\linewidth, borderstyle=U, borderwidth=0.5]{}\\[0.5em]
+    Amount: kr \TextField[name=amount_kr,width=0.3\linewidth, borderstyle=U, borderwidth=0.5]{} 
+    \quad öre \TextField[name=amount_ore,width=0.3\linewidth, borderstyle=U, borderwidth=0.5]{}\\[0.5em]
+    Signature: \TextField[name=signature,width=0.95\linewidth, borderstyle=U, borderwidth=0.5]{}\\[1em]
+    
+    \textbf{Digital receipt?}\\[0.5em]
+    If you originally got the receipt in a digital format, mail it to \texttt{kvitto@dtek.se} with subject: [Committee]: [Your name] - [amount]\\[0.5em]
+    Digital receipt: \CheckBox[name=digital_receipt,width=1em,bordercolor=black]{}\\[0.5em]
+    Mail date (YYYY-MM-DD): \TextField[name=mail_date,width=0.45\linewidth, borderstyle=U, borderwidth=0.5]{}\\[1em]
+    
+    \textbf{NOTE:} Only for receipts received digitally.\\[1.5em]
+    
+    \textbf{For treasurer}\\[0.5em]
+    Signature: \TextField[name=treasurer_signature,width=0.95\linewidth, borderstyle=U, borderwidth=0.5]{}\\[0.5em]
+    Copy in Visma: \CheckBox[name=copy_visma_yes,width=1em,bordercolor=black]{} Ja \quad 
+    \CheckBox[name=copy_visma_no,width=1em,bordercolor=black]{} Nej\\[0.5em]
+    Ver. number: \TextField[name=ver_number,width=0.45\linewidth, borderstyle=U, borderwidth=0.5]{}
+  \end{minipage}\hfill
+  \begin{minipage}[t][\textheight][c]{0.48\textwidth}
+    \fbox{\parbox[c][\textheight][c]{\textwidth}{%
+      \centering
+      \textbf{Small receipts here}\\[1em]
+      \small
+      • Attach small receipts here.\\[0.5em]
+      • Multiple receipts on the same date, same purpose, and to the same treasurer can use the same expense report form.\\[0.5em]
+      • Attach large receipts on the backside of this paper (if they don't fit this box).\\[0.5em]
+      • Always attach multiple receipts on top of each other.\\[0.5em]
+      • If you gave away food then supply a list of attendees with first- and lastname and working hours on the back.
+    }}
+  \end{minipage}
+  \vfil
+}
+\end{Form}
 \end{document}
