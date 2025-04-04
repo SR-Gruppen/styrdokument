@@ -26,10 +26,6 @@ jobs:
           mkdir -p classes/ChS_FONTS
           cp dTeX/dtek.cls dTeX/dtekprotokoll.cls dTeX/dtekmotion.cls dTeX/dtekinstruktion.cls dTeX/dteklag.cls dTeX/dtekkallelse.cls dTeX/dteklogo.pdf dTeX/dteklogo_orange.pdf classes/
 
-<<<<<<< HEAD
-      - name: Compile PDFs
-=======
-      # 4. Compile documents in the repository root (using files in src/).
       - name: Compile PDFs
         uses: xu-cheng/latex-action@v3
         with:
@@ -38,56 +34,6 @@ jobs:
             src/stadgar.tex
             src/incidenthantering.tex
             src/instruktioner/*.tex
-            src/riktlinjer/*.tex
-            src/mallar/*.tex
-            src/mallar/avtal/*.tex
-            src/foreningar/date-it/*.tex
-          work_in_root_file_dir: true
-          latexmk_use_xelatex: true
-          extra_fonts: |
-            ./dTeX/ChS_FONTS/Open_Sans/*.ttf
-            ./dTeX/ChS_FONTS/PT_Serif/*.ttf
-        env:
-          TEXINPUTS: ".:/github/workspace/classes//:"
-
-      # 5. Compile documents in subdirectories. Note: We adjust TEXINPUTS relative path.
-      - name: Compile instruktioner documents
->>>>>>> 2eeb431 (Does this fix fonts?)
-        uses: xu-cheng/latex-action@v3
-        with:
-          root_file: |
-            src/reglemente.tex
-            src/stadgar.tex
-            src/incidenthantering.tex
-            src/instruktioner/*.tex
-<<<<<<< HEAD
-=======
-          work_in_root_file_dir: true
-          latexmk_use_xelatex: true
-          extra_fonts: |
-            ./dTeX/ChS_FONTS/Open_Sans/*.ttf
-            ./dTeX/ChS_FONTS/PT_Serif/*.ttf
-        env:
-          TEXINPUTS: ".:../../classes//:"
-
-      - name: Compile mallar documents
-        uses: xu-cheng/latex-action@v3
-        with:
-          root_file: |
-            src/mallar/*.tex
-          work_in_root_file_dir: true
-          latexmk_use_xelatex: true
-          extra_fonts: |
-            ./dTeX/ChS_FONTS/Open_Sans/*.ttf
-            ./dTeX/ChS_FONTS/PT_Serif/*.ttf
-        env:
-          TEXINPUTS: ".:../../classes//:"
-
-      - name: Compile riktlinjer documents
-        uses: xu-cheng/latex-action@v3
-        with:
-          root_file: |
->>>>>>> 2eeb431 (Does this fix fonts?)
             src/riktlinjer/*.tex
             src/mallar/*.tex
             src/mallar/avtal/*.tex
@@ -105,23 +51,6 @@ jobs:
           mv src/* .
           rm -rf src
 
-<<<<<<< HEAD
-=======
-      - name: Compile foreningar documents
-        uses: xu-cheng/latex-action@v3
-        with:
-          root_file: |
-            src/foreningar/*.tex
-          work_in_root_file_dir: true
-          latexmk_use_xelatex: true
-          extra_fonts: |
-            ./dTeX/ChS_FONTS/Open_Sans/*.ttf
-            ./dTeX/ChS_FONTS/PT_Serif/*.ttf
-        env:
-          TEXINPUTS: ".:../../classes//:"
-
-      # 6. Upload all generated PDFs as artifacts.
->>>>>>> 2eeb431 (Does this fix fonts?)
       - name: Upload PDF Artifacts
         uses: actions/upload-artifact@v4
         with:
