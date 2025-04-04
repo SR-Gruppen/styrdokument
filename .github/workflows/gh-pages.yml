@@ -8,6 +8,9 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pages: write
     steps:
       # 1. Checkout the repository.
       - name: Checkout Repository
