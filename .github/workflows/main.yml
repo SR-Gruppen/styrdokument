@@ -1,89 +1,58 @@
-name: Recompile styrdokument
+name: Build and Upload PDFs
 
-# Controls when the action will run. 
 on:
-  # Triggers the workflow on pushing on the master branch
   push:
     branches: [ main ]
-
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 jobs:
-  compile_latex:
+  build:
     runs-on: ubuntu-latest
     steps:
-      # Checks-out the repository 
-      - name: Checkout entire repository
-        uses: actions/checkout@v2
-        
-      # Sets variables used later if files were changed
-      - name: Filter changed files
-        uses: dorny/paths-filter@v2.2.1
-        id: filter
-        with:
-          filters: |
-            stadgar:
-              - 'stadgar/stadgar.tex'
-            reglemente:
-              - 'reglemente/*'
-            eko_reglemente:
-              - 'ekonomiskt_reglemente/ekonomiskt_reglemente.tex'
-            date-it-reglemente:
-              - 'date-it-styrdokument/date-it-reglemente.tex'
-                
-      - name: Checkout dtek-class
-        uses: actions/checkout@v2
-        with:
-          repository: dtekcth/dTeX
-          path: './classes'
+      # 1. Checkout the main (styrdokument) repository.
+      - name: Checkout styrdokument repository
+        uses: actions/checkout@v4
 
-      - run: 'cp -r ./classes/* ./stadgar'
-        if: steps.filter.outputs.stadgar == 'true'
-      - name: Kompilera stadgar
-        if: steps.filter.outputs.stadgar == 'true'
-        uses: vinay0410/tectonic-action@v1.1.2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # 2. Checkout the dTeX repository.
+      - name: Checkout dTeX repository
+        uses: actions/checkout@v4
         with:
-          # Path of Tex File
-          tex_path: 'stadgar/stadgar.tex'
-          # String stating whether to push output PDF, PDF will only be pushed in case of "yes"
-          push: 'yes'
-          
-      - run: 'cp -r ./classes/* ./reglemente'
-        if: steps.filter.outputs.reglemente == 'true'
-      - name: Kompilera reglemente
-        if: steps.filter.outputs.reglemente == 'true'
-        uses: vinay0410/tectonic-action@v1.1.2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          # Path of Tex File
-          tex_path: 'reglemente/reglemente.tex'
-          # String stating whether to push output PDF, PDF will only be pushed in case of "yes"
-          push: 'yes'
-          
-      - run: 'cp -r ./classes/* ./ekonomiskt_reglemente'
-        if: steps.filter.outputs.eko_reglemente == 'true'
-      - name: Kompilera ekonomiskt reglemente
-        if: steps.filter.outputs.eko_reglemente == 'true'
-        uses: vinay0410/tectonic-action@v1.1.2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          # Path of Tex File
-          tex_path: 'ekonomiskt_reglemente/ekonomiskt_reglemente.tex'
-          # String stating whether to push output PDF, PDF will only be pushed in case of "yes"
-          push: 'yes'
+          repository: SR-Gruppen/dTeX
+          path: './dTeX'
 
-      - name: Kompilera DatE-ITs reglemente
-        if: steps.filter.outputs.date-it-regelemente == 'true'
-        uses: vinay0410/tectonic-action@v1.1.2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # 3. Copy dTeX class files and resources into a local "classes" folder.
+      - name: Copy dTeX classes and resources
+        run: |
+          mkdir -p classes/ChS_FONTS
+          cp dTeX/dtek.cls dTeX/dtekprotokoll.cls dTeX/dtekmotion.cls dTeX/dtekinstruktion.cls dTeX/dteklag.cls dTeX/dtekkallelse.cls dTeX/dteklogo.pdf dTeX/dteklogo_orange.pdf classes/
+
+      - name: Compile PDFs
+        uses: xu-cheng/latex-action@v3
         with:
-          # Path of Tex File
-          tex_path: 'date-it-styrdokument/date-it-reglemente.tex'
-          # String stating whether to push output PDF, PDF will only be pushed in case of "yes"
-          push: 'yes'
+          root_file: |
+            src/reglemente.tex
+            src/stadgar.tex
+            src/incidenthantering.tex
+            src/instruktioner/*.tex
+            src/riktlinjer/*.tex
+            src/mallar/*.tex
+            src/mallar/avtal/*.tex
+            src/foreningar/date-it/*.tex
+          work_in_root_file_dir: true
+          latexmk_use_xelatex: true
+          extra_fonts: |
+            ./dTeX/ChS_FONTS/Open_Sans/*.ttf
+            ./dTeX/ChS_FONTS/PT_Serif/*.ttf
+        env:
+          TEXINPUTS: ".:${{ github.workspace }}/dTeX//:"
+      - name: Clean up
+        run: |
+          rm -rf dTeX classes
+          mv src/* .
+          rm -rf src
+
+      - name: Upload PDF Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: PDF-Artifacts
+          path: "**/*.pdf"

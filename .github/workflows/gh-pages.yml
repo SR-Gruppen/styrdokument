@@ -1,0 +1,113 @@
+name: Publish Release to GitHub Pages
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pages: write
+    steps:
+      # 1. Checkout the repository.
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # 2. Download the release asset (assumes the release has a zip asset named "pdf-artifacts.zip").
+      - name: Download Release Asset
+        run: |
+          # Get the asset download URL from the release event payload.
+          asset_url=$(jq -r '.release.assets[] | select(.name=="pdf-artifacts.zip") | .browser_download_url' "$GITHUB_EVENT_PATH")
+          echo "Downloading from $asset_url"
+          curl -L -o pdf-artifacts.zip "$asset_url"
+        env:
+          GITHUB_EVENT_PATH: ${{ github.event_path }}
+
+      # 3. Extract the artifact to a folder named "site".
+      - name: Extract Artifact
+        run: |
+          mkdir site
+          unzip pdf-artifacts.zip -d site
+
+      # 4. Inline creation of the generate_index.py script
+      - name: Create generate_index.py script
+        run: |
+          cat << 'EOF' > generate_index.py
+          #!/usr/bin/env python3
+          import os
+          import sys
+          import html
+
+          def generate_file_tree(root_dir):
+              def walk_directory(current_dir):
+                  entries = sorted(os.listdir(current_dir))
+                  lines = []
+                  if entries:
+                      lines.append("<ul>")
+                      for entry in entries:
+                          full_path = os.path.join(current_dir, entry)
+                          if os.path.isdir(full_path):
+                              # Display the directory name (bold) and its nested contents.
+                              lines.append(f"<li><strong>{html.escape(entry)}</strong>")
+                              lines.append(walk_directory(full_path))
+                              lines.append("</li>")
+                          else:
+                              # Only add PDF files as links.
+                              if entry.lower().endswith('.pdf'):
+                                  rel_path = os.path.relpath(full_path, root_dir)
+                                  lines.append(f"<li><a href='{html.escape(rel_path)}'>{html.escape(entry)}</a></li>")
+                      lines.append("</ul>")
+                  return "\n".join(lines)
+              return walk_directory(root_dir)
+
+          def generate_index_html(root_dir):
+              index_path = os.path.join(root_dir, "index.html")
+              tree_html = generate_file_tree(root_dir)
+              html_content = f"""<!DOCTYPE html>
+          <html>
+          <head>
+              <meta charset="UTF-8">
+              <title>Index of {html.escape(root_dir)}</title>
+              <style>
+                  ul {{
+                      list-style-type: none;
+                      margin-left: 20px;
+                  }}
+                  li {{
+                      margin: 5px 0;
+                  }}
+              </style>
+          </head>
+          <body>
+              <h1>Index of {html.escape(root_dir)}</h1>
+              {tree_html}
+          </body>
+          </html>
+          """
+              with open(index_path, "w", encoding="utf-8") as index_file:
+                  index_file.write(html_content)
+              print("Index generated at", index_path)
+
+          if __name__ == "__main__":
+              if len(sys.argv) != 2:
+                  print("Usage: python generate_index.py <directory>")
+                  sys.exit(1)
+              generate_index_html(sys.argv[1])
+          EOF
+
+      - name: Make script executable
+        run: chmod +x generate_index.py
+
+      # 5. Generate an index file to navigate the directories.
+      - name: Generate Index
+        run: python generate_index.py site
+
+      # 6. Deploy the contents of the "site" folder to GitHub Pages.
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./site
