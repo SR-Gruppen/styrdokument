@@ -1,0 +1,42 @@
+name: Publish Release to GitHub Pages
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # 1. Checkout the repository.
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # 2. Download the release asset (assumes the release has a zip asset named "artifact.zip").
+      - name: Download Release Asset
+        run: |
+          # Get the asset download URL from the release event payload.
+          asset_url=$(jq -r '.release.assets[] | select(.name=="pdf-artifacts.zip") | .browser_download_url' "$GITHUB_EVENT_PATH")
+          echo "Downloading from $asset_url"
+          curl -L -o pdf-artifacts.zip "$asset_url"
+        env:
+          GITHUB_EVENT_PATH: ${{ github.event_path }}
+
+      # 3. Extract the artifact to a folder named "site".
+      - name: Extract Artifact
+        run: |
+          mkdir site
+          unzip pdf-artifacts.zip -d site
+
+      # 4. (Optional) Generate an index file to navigate the directories.
+      - name: Generate Index
+        run: |
+          # Example: run a custom Python script to generate an index.html
+          python generate_index.py site
+
+      # 5. Deploy the contents of the "site" folder to GitHub Pages.
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./site
