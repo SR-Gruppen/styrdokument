@@ -3,6 +3,7 @@ name: Publish Release to GitHub Pages
 on:
   release:
     types: [published]
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -12,7 +13,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      # 2. Download the release asset (assumes the release has a zip asset named "artifact.zip").
+      # 2. Download the release asset (assumes the release has a zip asset named "pdf-artifacts.zip").
       - name: Download Release Asset
         run: |
           # Get the asset download URL from the release event payload.
@@ -28,50 +29,52 @@ jobs:
           mkdir site
           unzip pdf-artifacts.zip -d site
 
-          - name: Create generate_index.py script
-          run: |
-            cat << 'EOF' > generate_index.py
-            #!/usr/bin/env python3
-            import os
-            import sys
-            import html
-        
-            def generate_index_html(root_dir):
-                index_path = os.path.join(root_dir, "index.html")
-                with open(index_path, "w", encoding="utf-8") as index_file:
-                    index_file.write("<html><head><meta charset='UTF-8'><title>Index of {}</title></head><body>\n".format(root_dir))
-                    index_file.write("<h1>Index of {}</h1>\n<ul>\n".format(root_dir))
-                    
-                    for current_path, dirs, files in os.walk(root_dir):
-                        rel_dir = os.path.relpath(current_path, root_dir)
-                        if rel_dir == ".":
-                            rel_dir = ""
-                        else:
-                            rel_dir += "/"
-                        for d in dirs:
-                            link = html.escape(rel_dir + d + "/")
-                            index_file.write(f"<li>[DIR] <a href='{link}'>{html.escape(d)}</a></li>\n")
-                        for f in files:
-                            if f == "index.html":
-                                continue
-                            link = html.escape(rel_dir + f)
-                            index_file.write(f"<li>[FILE] <a href='{link}'>{html.escape(f)}</a></li>\n")
-                    index_file.write("</ul>\n</body></html>")
-                print("Index generated at", index_path)
-        
-            if __name__ == "__main__":
-                if len(sys.argv) != 2:
-                    print("Usage: python generate_index.py <directory>")
-                    sys.exit(1)
-                generate_index_html(sys.argv[1])
-            EOF
-            
+      # 4. Inline creation of the generate_index.py script
+      - name: Create generate_index.py script
+        run: |
+          cat << 'EOF' > generate_index.py
+          #!/usr/bin/env python3
+          import os
+          import sys
+          import html
+
+          def generate_index_html(root_dir):
+              index_path = os.path.join(root_dir, "index.html")
+              with open(index_path, "w", encoding="utf-8") as index_file:
+                  index_file.write("<html><head><meta charset='UTF-8'><title>Index of {}</title></head><body>\n".format(root_dir))
+                  index_file.write("<h1>Index of {}</h1>\n<ul>\n".format(root_dir))
+                  for current_path, dirs, files in os.walk(root_dir):
+                      rel_dir = os.path.relpath(current_path, root_dir)
+                      if rel_dir == ".":
+                          rel_dir = ""
+                      else:
+                          rel_dir += "/"
+                      for d in dirs:
+                          link = html.escape(rel_dir + d + "/")
+                          index_file.write(f"<li>[DIR] <a href='{link}'>{html.escape(d)}</a></li>\n")
+                      for f in files:
+                          if f == "index.html":
+                              continue
+                          link = html.escape(rel_dir + f)
+                          index_file.write(f"<li>[FILE] <a href='{link}'>{html.escape(f)}</a></li>\n")
+                  index_file.write("</ul>\n</body></html>")
+              print("Index generated at", index_path)
+
+          if __name__ == "__main__":
+              if len(sys.argv) != 2:
+                  print("Usage: python generate_index.py <directory>")
+                  sys.exit(1)
+              generate_index_html(sys.argv[1])
+          EOF
+
       - name: Make script executable
         run: chmod +x generate_index.py
+
+      # 5. Generate an index file to navigate the directories.
       - name: Generate Index
         run: python generate_index.py site
 
-      # 5. Deploy the contents of the "site" folder to GitHub Pages.
+      # 6. Deploy the contents of the "site" folder to GitHub Pages.
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
