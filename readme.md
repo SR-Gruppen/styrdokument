@@ -1,8 +1,8 @@
 # SR-Gruppen (StadgeRevision-Gruppen / StyrdokumentRevision-Gruppen / SetReset-Gruppen)
 
-![GitHub branch check runs](https://img.shields.io/github/check-runs/SR-Gruppen/styrdokument/main?link=https%3A%2F%2Fgithub.com%2FSR-Gruppen%2Fstyrdokument%2Factions%2Fworkflows%2Fmain.yml)
-![GitHub Tag](https://img.shields.io/github/v/tag/SR-Gruppen/styrdokument)
-![Static Badge](https://img.shields.io/badge/Browse-latest-release?style=for-the-badge&color=FF6615&link=https%3A%2F%2Fsr-gruppen.github.io%2Fstyrdokument%2F)
+[![GitHub branch check runs](https://img.shields.io/github/check-runs/SR-Gruppen/styrdokument/main)](https://github.com/SR-Gruppen/styrdokument/actions/workflows/main.yml)
+[![GitHub Tag](https://img.shields.io/github/v/tag/SR-Gruppen/styrdokument)](https://github.com/SR-Gruppen/styrdokument/tags)
+[![Static Badge](https://img.shields.io/badge/Browse-latest-release?color=FF6615)](https://sr-gruppen.github.io/styrdokument/)
 
 
 
