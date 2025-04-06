@@ -1,11 +1,11 @@
 .PHONY: all clean reglemente stadgar incidenthantering instruktioner mallar riktlinjer foreningar
 
-all: reglemente stadgar incidenthantering instruktioner mallar riktlinjer foreningar
+all: reglemente stadgar incidenthantering instruktioner funktionsdokument riktlinjer foreningar
 
 clean:
 	rm -rf aux
 	rm -rf instruktioner
-	rm -rf mallar
+	rm -rf funktionsdokument
 	rm -rf riktlinjer
 	rm -rf foreningar
 
@@ -31,11 +31,11 @@ instruktioner:
 		mv "$$auxDir/$$(basename "$$f" .tex).pdf" "$$targetDir/"; \
 	done
 
-mallar:
-	for f in $$(find src/mallar -type f -name '*.tex'); do \
-		rel=$${f#src/mallar/}; \
-		targetDir=mallar/$$(dirname "$$rel"); \
-		auxDir=aux/mallar/$$(dirname "$$rel"); \
+funktionsdokument:
+	for f in $$(find src/funktionsdokument -type f -name '*.tex'); do \
+		rel=$${f#src/funktionsdokument/}; \
+		targetDir=funktionsdokument/$$(dirname "$$rel"); \
+		auxDir=aux/funktionsdokument/$$(dirname "$$rel"); \
 		mkdir -p "$$auxDir" "$$targetDir"; \
 		latexmk -xelatex -outdir="$$auxDir" "$$f"; \
 		mv "$$auxDir/$$(basename "$$f" .tex).pdf" "$$targetDir/"; \

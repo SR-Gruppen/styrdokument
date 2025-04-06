@@ -33,11 +33,7 @@ jobs:
             src/reglemente.tex
             src/stadgar.tex
             src/incidenthantering.tex
-            src/instruktioner/*.tex
-            src/riktlinjer/*.tex
-            src/mallar/*.tex
-            src/mallar/avtal/*.tex
-            src/foreningar/date-it/*.tex
+            src/**/*.tex
           work_in_root_file_dir: true
           latexmk_use_xelatex: true
           extra_fonts: |
