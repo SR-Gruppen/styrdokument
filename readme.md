@@ -9,7 +9,7 @@
 ## Status & Downloads
 
 - **Kompilerade dokument:** Letar du efter de färdiga dokumenten? [Här har du en GitHub Pages site med dem](https://sr-gruppen.github.io/styrdokument/).
-- **Artefakter:** Vill du ha de absolut senaste dokumenten som finns? Då kan du hitta dem under de senast byggda artefakterna som finns [här](https://img.shields.io/github/check-runs/SR-Gruppen/styrdokument/main?link=https%3A%2F%2Fgithub.com%2FSR-Gruppen%2Fstyrdokument%2Factions%2Fworkflows%2Fmain.yml).
+- **Artefakter:** Vill du ha de absolut senaste dokumenten som finns? Då kan du hitta dem under de senast byggda artefakterna som finns [här](https://github.com/SR-Gruppen/styrdokument/actions/workflows/main.yml).
 
 ---
 
