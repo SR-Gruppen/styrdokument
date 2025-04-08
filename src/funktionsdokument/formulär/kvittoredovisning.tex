@@ -45,7 +45,7 @@
 % Right header: page number and fillable total-pages field
 \rhead{%
   \opensans
-  Page \thepage\ of \TextField[name=totalPages,width=1cm, borderstyle=U, borderwidth=0.5]{}%
+  Page \thepage\ of \TextField[name=totalPages,width=1cm, borderstyle=U, borderwidth=0.5, bordercolor={0 0 0}]{}%
 }
 %
 % Remove header rule
@@ -64,36 +64,35 @@
     {\Large \bfseries Kvittoredovisning}\\[1em]
     \raggedright
     \textbf{Personal details}\\[0.5em]
-    First– and lastname: \TextField[name=fullname,width=0.95\linewidth, borderstyle=U, borderwidth=0.5]{}\\[0.5em]
-    Phone number: \TextField[name=phone,width=0.95\linewidth, borderstyle=U, borderwidth=0.5]{}\\[0.5em]
+    First– and lastname: \TextField[name=fullname,width=0.95\linewidth, borderstyle=U, borderwidth=0.5, bordercolor={0 0 0}]{}\\[0.5em]
+    Phone number: \TextField[name=phone,width=0.95\linewidth, borderstyle=U, borderwidth=0.5, bordercolor={0 0 0}]{}\\[0.5em]
     Bank: \CheckBox[name=bank_handelsbanken,width=1em,bordercolor=black]{} Handelsbanken \quad 
     \CheckBox[name=bank_other,width=1em,bordercolor=black]{} Other\\[0.5em]
-    Clearing: \TextField[name=clearing,width=0.45\linewidth, borderstyle=U, borderwidth=0.5]{} \quad
-    Account number: \TextField[name=account,width=0.45\linewidth, borderstyle=U, borderwidth=0.5]{}\\[1em]
+    Clearing: \TextField[name=clearing,width=0.45\linewidth, borderstyle=U, borderwidth=0.5, bordercolor={0 0 0}]{} \quad
+    Account number: \TextField[name=account,width=0.45\linewidth, borderstyle=U, borderwidth=0.5, bordercolor={0 0 0}]{}\\[1em]
     
     1 \quad Compulsory first time paying an expenditure to a treasurer.\\[1em]
     
     \textbf{Expenditure details}\\[0.5em]
-    Background: \TextField[name=background,width=0.95\linewidth, borderstyle=U, borderwidth=0.5]{}\\[1em]
+    Background: \TextField[name=background,width=0.95\linewidth, borderstyle=U, borderwidth=0.5, bordercolor={0 0 0}]{}\\[1em]
     
     \textbf{Paying Committee}\\[0.5em]
-    Purchase date (YYYY-MM-DD): \TextField[name=purchase_date,width=0.45\linewidth, borderstyle=U, borderwidth=0.5]{}\\[0.5em]
-    Amount: kr \TextField[name=amount_kr,width=0.3\linewidth, borderstyle=U, borderwidth=0.5]{} 
-    \quad öre \TextField[name=amount_ore,width=0.3\linewidth, borderstyle=U, borderwidth=0.5]{}\\[0.5em]
-    Signature: \TextField[name=signature,width=0.95\linewidth, borderstyle=U, borderwidth=0.5]{}\\[1em]
+    Purchase date (YYYY-MM-DD): \TextField[name=purchase_date,width=0.45\linewidth, borderstyle=U, borderwidth=0.5, bordercolor={0 0 0}]{}\\[0.5em]
+    Amount: \TextField[name=amount_kr,width=0.3\linewidth, borderstyle=U, borderwidth=0.5, bordercolor={0 0 0}]{}\quad kr\quad \TextField[name=amount_ore,width=0.3\linewidth, borderstyle=U, borderwidth=0.5, bordercolor={0 0 0}]{}\quad öre\\[0.5em]
+    Signature: \makebox[0.95\linewidth]{\hrulefill}\\[1em]
     
     \textbf{Digital receipt?}\\[0.5em]
     If you originally got the receipt in a digital format, mail it to \texttt{kvitto@dtek.se} with subject: [Committee]: [Your name] - [amount]\\[0.5em]
     Digital receipt: \CheckBox[name=digital_receipt,width=1em,bordercolor=black]{}\\[0.5em]
-    Mail date (YYYY-MM-DD): \TextField[name=mail_date,width=0.45\linewidth, borderstyle=U, borderwidth=0.5]{}\\[1em]
+    Mail date (YYYY-MM-DD): \TextField[name=mail_date,width=0.45\linewidth, borderstyle=U, borderwidth=0.5, bordercolor={0 0 0}]{}\\[1em]
     
     \textbf{NOTE:} Only for receipts received digitally.\\[1.5em]
     
     \textbf{For treasurer}\\[0.5em]
-    Signature: \TextField[name=treasurer_signature,width=0.95\linewidth, borderstyle=U, borderwidth=0.5]{}\\[0.5em]
+    Signature: \makebox[0.95\linewidth]{\hrulefill}\\[0.5em]
     Copy in Visma: \CheckBox[name=copy_visma_yes,width=1em,bordercolor=black]{} Ja \quad 
     \CheckBox[name=copy_visma_no,width=1em,bordercolor=black]{} Nej\\[0.5em]
-    Ver. number: \TextField[name=ver_number,width=0.45\linewidth, borderstyle=U, borderwidth=0.5]{}
+    Ver. number: \TextField[name=ver_number,width=0.45\linewidth, borderstyle=U, borderwidth=0.5, bordercolor={0 0 0}]{}
   \end{minipage}\hfill
   \begin{minipage}[t][\textheight][c]{0.48\textwidth}
     \fbox{\parbox[c][\textheight][c]{\textwidth}{%

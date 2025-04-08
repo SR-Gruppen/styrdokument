@@ -1,9 +1,73 @@
-\documentclass[a4paper]{dtek}
-
-\setcounter{secnumdepth}{5}
-\title{Nominering}
-\date{Utkast: SR-Gruppen v2026.1-pre4}
-
+\documentclass[a4paper,11pt]{article}
+%
+% --- Packages ---
+\usepackage[swedish]{babel}
+\usepackage{fontspec}         
+\defaultfontfeatures{Ligatures=TeX}
+\setmainfont{PT Serif}
+\newfontfamily\opensans{Open Sans}
+\usepackage{parskip}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage[includeheadfoot,top=1.0cm,bottom=3.5cm,left=2.5cm,right=2.5cm]{geometry}
+\usepackage{xcolor}
+%
+\hypersetup{
+  pdfauthor={Datateknologsektionen, Chalmers Studentkår},
+  pdfsubject={Nominering},
+  colorlinks=false,
+  pdfborder={0 0 0}
+}
+%
+% --- Header & Footer ---
+\pagestyle{fancy}
+\setlength{\headheight}{25mm}
+\setlength{\headsep}{15mm}
+\fancyhf{} % Rensa header/footer
+\lhead{%
+  \opensans
+  \hspace{-2em}%
+  \raisebox{-2em}{\includegraphics[width=20mm]{dteklogo_orange}}%
+  \hspace{1em}%
+  \parbox[b]{0.5\textwidth}{\bfseries Datateknologsektionen\\[-0.2em]Chalmers Studentkår}%
+}
+\rhead{%
+  \opensans
+  Page \thepage\ of \TextField[name=totalPages,width=1cm, borderstyle=U, borderwidth=0.5, bordercolor={0 0 0}]{}%
+}
+\renewcommand{\headrulewidth}{0pt}
+\fancyfoot{}
+%
+% --- Begin Document ---
 \begin{document}
-Placeholder
+\begin{Form}  % Starta ifyllbart PDF-formulär
+%
+{\Large \bfseries Nominering}\par
+\vspace{1em}
+Fyll i dina personuppgifter och nominera någon till en post. Ange även din motivering för nomineringen.  
+Formuläret ska skickas till \texttt{valberedningen@dtek.se} eller lämnas i valberedningens brevlåda utanför DStyrets rum.
+\\[1em]
+%
+\textbf{Dina personuppgifter:}\\
+\begin{tabular}{p{0.32\textwidth} p{0.32\textwidth} p{0.32\textwidth}}
+  \TextField[name=fullname,width=\linewidth, borderstyle=U, borderwidth=0.5, bordercolor={0 0 0}]{} & 
+  \TextField[name=cid,width=\linewidth, borderstyle=U, borderwidth=0.5, bordercolor={0 0 0}]{} & 
+  \TextField[name=kontakt,width=\linewidth, borderstyle=U, borderwidth=0.5, bordercolor={0 0 0}]{}
+  \\[0.5ex]
+  Förnamn “Nick” Efternamn & CID & E‑post/Telefon
+\end{tabular}
+\\[1em]
+%
+\textbf{Nominering:}\\
+\TextField[name=candidate,width=0.9\linewidth, borderstyle=U, borderwidth=0.5, bordercolor={0 0 0}]{}\\
+Namn på den nominerade\\[1em]
+\TextField[name=post,width=0.9\linewidth, borderstyle=U, borderwidth=0.5, bordercolor={0 0 0}]{}\\
+Post/Kommitté\\[1em]
+%
+\textbf{Motivering:}\\[0.5em]
+\TextField[name=motivering,width=\linewidth, multiline=true, height=15\baselineskip, borderstyle=U, borderwidth=0.5, bordercolor={0 0 0}]{}
+\\[1em]
+Datum: \TextField[name=date,width=3cm, borderstyle=U, borderwidth=0.5, bordercolor={0 0 0}]{}
+\end{Form}
 \end{document}
