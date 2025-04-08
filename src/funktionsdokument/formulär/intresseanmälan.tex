@@ -1,0 +1,127 @@
+\documentclass[a4paper,11pt]{article}
+%
+% --- Packages ---
+\usepackage[swedish]{babel}
+\usepackage{fontspec}         
+\defaultfontfeatures{Ligatures=TeX}
+\setmainfont{PT Serif}
+\newfontfamily\opensans{Open Sans}
+\usepackage{parskip}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage[includeheadfoot,top=1.0cm,bottom=3.5cm,left=2.5cm,right=2.5cm]{geometry}
+\usepackage{xcolor}
+%
+\hypersetup{
+  pdfauthor={Datateknologsektionen, Chalmers Studentkår},
+  pdfsubject={Intresseanmälan},
+  colorlinks=false,
+  pdfborder={0 0 0}
+}
+%
+% --- Header & Footer ---
+\pagestyle{fancy}
+\setlength{\headheight}{25mm}
+\setlength{\headsep}{15mm}
+\fancyhf{} % Rensa header/footer
+\lhead{%
+  \opensans
+  \hspace{-2em}%
+  \raisebox{-2em}{\includegraphics[width=20mm]{dteklogo_orange}}%
+  \hspace{1em}%
+  \parbox[b]{0.5\textwidth}{\bfseries Datateknologsektionen\\[-0.2em]Chalmers Studentkår}%
+}
+\renewcommand{\headrulewidth}{0pt}
+\fancyfoot{}
+%
+% --- Begin Document ---
+\begin{document}
+\begin{Form}  % Starta ifyllbart PDF-formulär
+%
+{\Large \bfseries Intresseanmälan}\par
+\vspace{1em}
+Syftet med denna intresseanmälan är att föranmäla ditt intresse att söka en förtroendepost eller ansvarspost.  
+Formuläret ska skickas till \texttt{valberedningen@dtek.se} eller lämnas i valberedningens brevlåda utanför DStyrets rum.
+\\
+%
+\textbf{Personuppgifter:}\\[0.5em]
+\begin{tabular}{p{0.32\textwidth} p{0.32\textwidth} p{0.32\textwidth}}
+  \TextField[name=fullname,width=\linewidth, borderstyle=U, borderwidth=0.5, bordercolor={0 0 0}]{} & 
+  \TextField[name=cid,width=\linewidth, borderstyle=U, borderwidth=0.5, bordercolor={0 0 0}]{} & 
+  \TextField[name=kontakt,width=\linewidth, borderstyle=U, borderwidth=0.5, bordercolor={0 0 0}]{}
+  \\[0.5ex]
+  Förnamn “Nick” Efternamn & CID & E‑post/Telefon
+\end{tabular}
+\vspace{1em}
+%
+% Three boxes in one row: Kommitté, Utskott, Roll.
+\setlength{\fboxrule}{1pt} % Tjock svart ram
+\begin{tabular}{@{}p{0.32\textwidth}@{\hspace{0.02\textwidth}}p{0.32\textwidth}@{\hspace{0.02\textwidth}}p{0.32\textwidth}@{}}
+% Box 1: Kommitté
+\fbox{%
+  \parbox[t][6cm][t]{\linewidth}{%
+    \textbf{Kommitté}\\[0.5em]
+    \CheckBox[name=chk_D6,width=1em,bordercolor={0 0 0}]{} D6\\[0.4em]
+    \CheckBox[name=chk_DRust,width=1em,bordercolor={0 0 0}]{} DRust\\[0.4em]
+    \CheckBox[name=chk_Delta,width=1em,bordercolor={0 0 0}]{} Delta\\[0.4em]
+    \CheckBox[name=chk_DM_nollK,width=1em,bordercolor={0 0 0}]{} DMNollK\\[0.4em]
+    \CheckBox[name=chk_DNollK,width=1em,bordercolor={0 0 0}]{} DNollK\\[0.4em]
+    \CheckBox[name=chk_DAG,width=1em,bordercolor={0 0 0}]{} DAG\\[0.4em]
+    \CheckBox[name=chk_DNS,width=1em,bordercolor={0 0 0}]{} DNS\\[0.4em]
+  }%
+}
+&
+% Box 2: Utskott
+\fbox{%
+  \parbox[t][6cm][t]{\linewidth}{%
+    \textbf{Utskott}\\[0.5em]
+    \CheckBox[name=chk_DLirium,width=1em,bordercolor={0 0 0}]{} DLirium\\[0.4em]
+    \CheckBox[name=chk_dHack,width=1em,bordercolor={0 0 0}]{} dHack\\[0.4em]
+    \CheckBox[name=chk_statthallarembetet,width=1em,bordercolor={0 0 0}]{} Ståthållarämbetet\\[0.4em]
+    \CheckBox[name=chk_JamstallD,width=1em,bordercolor={0 0 0}]{} JämställD\\[0.4em]
+    \CheckBox[name=chk_DFoto,width=1em,bordercolor={0 0 0}]{} DFoto\\[0.4em]
+    \CheckBox[name=chk_DKock,width=1em,bordercolor={0 0 0}]{} DKock\\[0.4em]
+  }%
+}
+&
+% Box 3: Roll (check boxes)
+\fbox{%
+  \parbox[t][6cm][t]{\linewidth}{%
+    \textbf{Roll}\\[0.5em]
+    \CheckBox[name=chk_ordforande,width=1em,bordercolor={0 0 0}]{} Ordförande\\[0.8em]
+    \CheckBox[name=chk_kassor,width=1em,bordercolor={0 0 0}]{} Kassör\\[0.8em]
+    \CheckBox[name=chk_ovrig,width=1em,bordercolor={0 0 0}]{} Övrig ledamot\\[0.8em]
+  }%
+}
+\end{tabular}
+%
+\vspace{1em}
+% Fourth box: Specifika funktionärsposter (full width)
+\fbox{%
+  \parbox[t][7cm][t]{\textwidth}{%
+    \textbf{Specifika funktionärsposter}\\[0.5em]
+    \CheckBox[name=chk_sektionsordforande,width=1em,bordercolor={0 0 0}]{} Sektionsordförande\\[0.4em]
+    \CheckBox[name=chk_sektionskassor,width=1em,bordercolor={0 0 0}]{} Sektionskassör\\[0.4em]
+    \CheckBox[name=chk_sektionssekreterare,width=1em,bordercolor={0 0 0}]{} Sektionssekreterare\\[0.4em]
+    \CheckBox[name=chk_vice_sektionsordforande,width=1em,bordercolor={0 0 0}]{} Vice sektionsordförande\\[0.4em]
+    \CheckBox[name=chk_samo,width=1em,bordercolor={0 0 0}]{} SAMO\\[0.4em]
+    \CheckBox[name=chk_motesordforande,width=1em,bordercolor={0 0 0}]{} Mötesordförande\\[0.4em]
+    \CheckBox[name=chk_vice_motesordforande,width=1em,bordercolor={0 0 0}]{} Vice mötesordförande\\[0.4em]
+    \CheckBox[name=chk_lekmannarevisor,width=1em,bordercolor={0 0 0}]{} Lekmannarevisor\\[0.4em]
+    \CheckBox[name=chk_valberedningen,width=1em,bordercolor={0 0 0}]{} Valberedningen\\[0.4em]
+  }%
+}
+%
+\end{Form}
+%
+% Second page: large input box for Övrig information, and a date field at the bottom.
+\newpage
+\begin{Form}
+\textbf{Övrig information:}\\[0.5em]
+\TextField[name=ovriginfo,width=\linewidth, multiline=true, height=20\baselineskip, borderstyle=U, borderwidth=0.5, bordercolor={0 0 0}]{}
+\\[1em]
+Datum: \TextField[name=date,width=3cm, borderstyle=U, borderwidth=0.5, bordercolor={0 0 0}]{}
+\end{Form}
+%
+\end{document}
