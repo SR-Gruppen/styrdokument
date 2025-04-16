@@ -2,6 +2,9 @@
 %   KOMPILERAS MED xelatex!
 \documentclass[a4paper]{dteklag}
 
+\usepackage{amsmath}
+
+
 \setcounter{secnumdepth}{5}
 \title{Stadga}
 \date{Utkast: SR-Gruppen v2026.1-pre4}
@@ -17,7 +20,7 @@
     \includegraphics[width=250pt]{dteklogo_orange.pdf}\\[3em]
     {\Huge Datateknologsektionen}\\[3em]
     {\Huge \textbf{Stadga}}\\[1em]
-    Utkast: SR-Gruppen v2026.1-pre3
+    Utkast: SR-Gruppen v2026.1-pre4
   \end{center}
 \end{titlepage}
 
@@ -183,8 +186,17 @@ Om färre än 40 datateknologer är närvarande då beslut ska fattas, kan detta
 \para Då medlem i valberedningen kandiderar till en post skall kandidatbedömning och intervju göras med hälften av valberedningens ledamöter utbytta mot ledamöter från sektionsstyrelsen.  
 
 \section{Valordning}
-\para [Inval] Alla datateknologer har rätt till att söka en eller flera förtroendeposter under ett sektionsmöte.
-\para Då det finns fler än en kandidat till en förtroendepost skall sluten votering tillämpas.
+\para [Inval] Alla datateknologer har rätt att söka en eller flera förtroendeposter under ett sektionsmöte.
+\para Vid val där fler än två kandidater ställer upp till samma post, eller där antalet sökande i en konstellation överstiger antalet tillgängliga platser, tillämpas antingen enkel majoritetsomröstning eller Ranked Choice Voting.
+\para Vid enkel majoritetsomröstning vinner den kandidat eller konstellation som erhåller flest röster och, vid oavgjort, sker lottdragning enligt övriga bestämmelser i stadgan.
+\para Mötesordföranden ska, innan omröstningen påbörjas, tydligt klargöra vilket röstningsalternativ som tillämpas utifrån antalet sökande och de aktuella omständigheterna.
+\para [Ranked Choice Voting] Vid Ranked Choice Voting ska varje röstberättigad fylla i en valsedel och rangordna samtliga sökande efter preferens med den mest lämpliga kandidaten först.
+\para Valsedel kan vara antingen fysisk i pappersform eller digital.
+\para Om ingen kandidat omedelbart når valdemandropen elimineras den kandidat som erhåller färst förstavalsade röster och dess röster omfördelas till nästa rangordnade kandidat.
+\para Processen med eliminering och omfördelning fortskrider i rundor tills en kandidat i ett enkelval eller ett antal kandidater i ett konstellationsval når den fastställda tröskeln.
+\para Tröskeln fastställs med hjälp av Droop-kvoten, vilken beräknas med formeln \(\text{Droopkvot} = \left\lfloor \frac{\text{röstlängd}}{\text{antal poster att tillsätta} + 1} \right\rfloor + 1\), där röstlängden är det totala antalet avgivna röster.
+\para När en kandidat erhåller ett antal röster som motsvarar eller överstiger Droop-kvoten, anses ytterligare röster inte påverka resultatet och överskottsröster överförs till nästa preferens på valsedeln.
+
 \para[Vakantsättning] Då sektionsmötet inte lyckas fylla en förtroendepost ska denna vakantsättas.
 \para[Fyllnadsval] Fyllnadsval kan begäras hos sektionsstyrelsen av valberedningen, men även genom motion eller förslag.
 \para Sektionsstyrelsen äger rätt att i samråd med valberedningen preliminärt tillsätta en vakant förtroendepost.
