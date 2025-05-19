@@ -1,4 +1,4 @@
-# SR-Gruppen (StadgeRevision-Gruppen / StyrdokumentRevision-Gruppen / SetReset-Gruppen)
+# SR-Docs
 
 [![GitHub branch check runs](https://img.shields.io/github/check-runs/SR-Gruppen/styrdokument/main)](https://github.com/SR-Gruppen/styrdokument/actions/workflows/main.yml)
 [![GitHub Tag](https://img.shields.io/github/v/tag/SR-Gruppen/styrdokument)](https://github.com/SR-Gruppen/styrdokument/tags)
@@ -13,7 +13,7 @@
 
 ---
 
-SR-Gruppen är tänkt att vara en sammanslutning av datateknologer med passion för att modernisera och fräscha upp styrdokumenten på Datateknologsektionen. Just nu är det en kul grej för att testa vad man kan åstadkomma, men med tillräckligt engagemang kan vi göra detta till verklighet och skapa en modern, tydlig och demokratisk dokumentation för sektionen.
+SR-Gruppen är tänkt att vara en sammanslutning av datateknologer med passion för att modernisera och fräscha upp Datateknologsektionen. Just nu är det en kul grej för att testa vad man kan åstadkomma, men med tillräckligt engagemang kan vi göra detta till verklighet och skapa en modern, tydlig och demokratisk sektion.
 
 ## Syfte
 - **Revidera och uppdatera:** Vi tar oss an uppdatering av stadgar, reglementen och övriga styrdokument för att säkerställa att de är i linje med bästa praxis och moderna krav.
